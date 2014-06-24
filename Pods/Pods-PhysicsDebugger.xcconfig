@@ -1,0 +1,1 @@
+PODS_PHYSICSDEBUGGER_OTHER_LDFLAGS = -framework SpriteKit

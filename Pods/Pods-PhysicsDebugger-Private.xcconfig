@@ -1,0 +1,5 @@
+#include "Pods-PhysicsDebugger.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/PhysicsDebugger" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/PhysicsDebugger"
+OTHER_LDFLAGS = -ObjC ${PODS_PHYSICSDEBUGGER_OTHER_LDFLAGS}
+PODS_ROOT = ${SRCROOT}
