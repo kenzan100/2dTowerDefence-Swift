@@ -33,6 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let enemyCastleCategory: UInt32 = 1 << 3
     
     var currentLane:CGFloat = 1.0
+    var gameResultLabel:SKLabelNode!
 
     override func didMoveToView(view: SKView) {
         self.backgroundColor = SKColor(red: 255, green: 255, blue: 255, alpha: 0.9)
@@ -149,6 +150,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.addChild(enemy_attacker)
         }
         prevTime = currentTime
+
+        if enemyCastleHealth < 0.0 {
+            gameResultLabel = SKLabelNode(fontNamed: "HelveticaBold")
+            gameResultLabel.text = String("You Win!")
+            addCenterLabel(gameResultLabel)
+            enemyCastle.removeFromParent()
+        }
+        if yourCastleHealth < 0.0 {
+            gameResultLabel = SKLabelNode(fontNamed: "HelveticaBold")
+            gameResultLabel.text = String("You Lose...")
+            addCenterLabel(gameResultLabel)
+            yourCastle.removeFromParent()
+        }
+    }
+
+    func addCenterLabel(label:SKLabelNode) {
+        label.fontSize = 100.0
+        label.fontColor = UIColor.blackColor()
+        label.zPosition = 10.0
+        label.position = CGPoint(x: 500, y: 400)
+        self.addChild(label)
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -158,10 +180,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ( bodyA_Mask == yourAttackerCategory && bodyB_Mask == enemyCastleCategory ) || ( bodyB_Mask == yourAttackerCategory && bodyA_Mask == enemyCastleCategory ) {
             enemyCastleHealth -= 10.0
             remainingEnemyCastleHealthLabel.text = String(enemyCastleHealth)
+            var enemyCastleNode:SKSpriteNode!
+            if bodyA_Mask == enemyCastleCategory {
+                enemyCastleNode = contact.bodyA.node as SKSpriteNode
+            } else {
+                enemyCastleNode = contact.bodyB.node as SKSpriteNode
+            }
+            enemyCastleNode.physicsBody.velocity = CGVectorMake(0, 0)
+            enemyCastleNode.runAction(SKAction.sequence([
+                SKAction.moveByX(2.0, y:2.0, duration: NSTimeInterval(0.05)),
+                SKAction.moveByX(-2.0, y:-2.0, duration: NSTimeInterval(0.05)),
+            ]))
         }
         if ( bodyA_Mask == enemyAttackerCategory && bodyB_Mask == yourCastleCategory ) || ( bodyB_Mask == enemyAttackerCategory && bodyA_Mask == yourCastleCategory) {
             yourCastleHealth -= 10.0
             remainingYourCastleHealthLabel.text = String(yourCastleHealth)
+            var yourCastleNode:SKSpriteNode!
+            if bodyA_Mask == yourCastleCategory {
+                yourCastleNode = contact.bodyA.node as SKSpriteNode
+            } else {
+                yourCastleNode = contact.bodyB.node as SKSpriteNode
+            }
+            yourCastleNode.physicsBody.velocity = CGVectorMake(0, 0)
+            yourCastleNode.runAction(SKAction.sequence([
+                SKAction.moveByX(-2.0, y:2.0, duration: NSTimeInterval(0.05)),
+                SKAction.moveByX(2.0, y:-2.0, duration: NSTimeInterval(0.05)),
+            ]))
         }
         if ( bodyA_Mask == yourAttackerCategory && bodyB_Mask == enemyAttackerCategory) {
             applyDamageTo(contact.bodyB.node)

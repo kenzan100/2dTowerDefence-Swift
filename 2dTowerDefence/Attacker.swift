@@ -36,12 +36,12 @@ class Attacker: SKSpriteNode {
         if whichType == "yours" {
             self.setScale(0.21)
             self.position = CGPoint(x: view.frame.size.width * 0.15, y: view.frame.size.height * 0.3)
-            moveAttacker = SKAction.moveByX(7.0, y:0.0, duration:NSTimeInterval(0.01 * 10.0))
+            moveAttacker = SKAction.moveByX(5.0, y:0.0, duration:NSTimeInterval(0.01 * 10.0))
             self.name = "yourAttacker"
         } else if whichType == "enemy" {
             self.setScale(0.25)
-            self.position = CGPoint(x: view.frame.size.width * 0.75, y: view.frame.size.height * 0.3)
-            moveAttacker = SKAction.moveByX(-7.0, y:0.0, duration:NSTimeInterval(0.01 * 10.0))
+            self.position = CGPoint(x: view.frame.size.width * 0.85, y: view.frame.size.height * 0.3)
+            moveAttacker = SKAction.moveByX(-5.0, y:0.0, duration:NSTimeInterval(0.01 * 10.0))
             self.name = "enemyAttacker"
         }
         
