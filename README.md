@@ -2,7 +2,7 @@
 
 2 Dimentinal Tower Defence game in Swift for iOS 8.
 
-![2dTowerDefence](http://i.imgur.com/YmDH50r.gif)
+(deleted since Somebody says posting screen shots are prohibited)
 
 # Notes
 
