@@ -46,7 +46,13 @@ class Attacker: SKSpriteNode {
         }
         
         self.runAction(SKAction.repeatActionForever(moveAttacker))
-        self.physicsBody = SKPhysicsBody(circleOfRadius: 40)
+        var verticalPosition = view.currentLane * 10.0
+        self.physicsBody = SKPhysicsBody(circleOfRadius: 40, center: CGPoint(x: 0.0, y: verticalPosition))
+        if view.currentLane == 3.0 {
+            view.currentLane = 1.0
+        } else {
+            ++view.currentLane
+        }
         self.physicsBody.dynamic = true
         self.physicsBody.allowsRotation = false
         self.userData = ["life": 10] as NSMutableDictionary
@@ -54,10 +60,6 @@ class Attacker: SKSpriteNode {
         var lifeLabel = SKLabelNode(text: String(lifeAsInt))
         self.addChild(lifeLabel)
         lifeLabel.name = "life_label"
-    }
-    
-    init (texture: SKTexture?) {
-        super.init(texture: texture)
     }
     
     init (texture: SKTexture?, color: SKColor?, size: CGSize) {

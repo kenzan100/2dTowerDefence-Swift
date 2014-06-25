@@ -32,6 +32,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let yourCastleCategory: UInt32 = 1 << 2
     let enemyCastleCategory: UInt32 = 1 << 3
     
+    var currentLane:CGFloat = 1.0
+
     override func didMoveToView(view: SKView) {
         self.backgroundColor = SKColor(red: 255, green: 255, blue: 255, alpha: 0.9)
         
