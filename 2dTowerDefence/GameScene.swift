@@ -3,7 +3,6 @@
 //  2dTowerDefence
 //
 //  Created by Yuta Okazaki on 2014/06/21.
-//  Copyright (c) 2014年 Yuta Okazaki. All rights reserved.
 //
 
 import SpriteKit

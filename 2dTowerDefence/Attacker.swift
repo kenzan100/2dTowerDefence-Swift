@@ -2,8 +2,7 @@
 //  Attacker.swift
 //  2dTowerDefence
 //
-//  Created by Yuta Okazaki on 2014/06/22.
-//  Copyright (c) 2014年 Yuta Okazaki. All rights reserved.
+//  Created by Yuta Okazaki on 2014/06/21.
 //
 
 import SpriteKit
