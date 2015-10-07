@@ -45,7 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(attackerCreateButton)
         self.addChild(levelUpButton)
         
-        remainingMoneyLabel = SKLabelNode(text: String(remainingMoney))
+        remainingMoneyLabel = SKLabelNode(text: String(stringInterpolationSegment: remainingMoney))
         remainingMoneyLabel.position = CGPoint(x: 800, y: 650)
         remainingMoneyLabel.fontSize = 60.0
         self.addChild(remainingMoneyLabel)
@@ -57,18 +57,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.setScale(3.2)
         ground.anchorPoint = CGPoint(x:0, y:0.45)
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width * 2.0, self.frame.size.height / 2.0))
-        ground.physicsBody.dynamic = false
+        ground.physicsBody!.dynamic = false
         self.addChild(ground)
         
         yourCastle = SKSpriteNode(imageNamed: "youCastle")
         yourCastle.setScale(0.5)
         yourCastle.position = CGPointMake( self.frame.size.width * 0.1, self.frame.size.height * 0.35)
         yourCastle.physicsBody = SKPhysicsBody(rectangleOfSize: yourCastle.size)
-        yourCastle.physicsBody.dynamic = false
-        yourCastle.physicsBody.categoryBitMask = yourCastleCategory
-        yourCastle.physicsBody.contactTestBitMask = enemyAttackerCategory
+        yourCastle.physicsBody!.dynamic = false
+        yourCastle.physicsBody!.categoryBitMask = yourCastleCategory
+        yourCastle.physicsBody!.contactTestBitMask = enemyAttackerCategory
         self.addChild(yourCastle)
-        remainingYourCastleHealthLabel = SKLabelNode(text: String(yourCastleHealth))
+        remainingYourCastleHealthLabel = SKLabelNode(text: String(stringInterpolationSegment: yourCastleHealth))
         remainingYourCastleHealthLabel.fontSize = 50.0
         yourCastle.addChild(remainingYourCastleHealthLabel)
      
@@ -76,12 +76,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemyCastle.setScale(0.5)
         enemyCastle.position = CGPointMake( self.frame.size.width * 0.9, self.frame.size.height * 0.35)
         enemyCastle.physicsBody = SKPhysicsBody(rectangleOfSize: enemyCastle.size)
-        enemyCastle.physicsBody.dynamic = false
-        enemyCastle.physicsBody.categoryBitMask = enemyCastleCategory
-        enemyCastle.physicsBody.contactTestBitMask = yourAttackerCategory
+        enemyCastle.physicsBody!.dynamic = false
+        enemyCastle.physicsBody!.categoryBitMask = enemyCastleCategory
+        enemyCastle.physicsBody!.contactTestBitMask = yourAttackerCategory
         self.addChild(enemyCastle)
         
-        remainingEnemyCastleHealthLabel = SKLabelNode(text: String(enemyCastleHealth))
+        remainingEnemyCastleHealthLabel = SKLabelNode(text: String(stringInterpolationSegment: enemyCastleHealth))
         remainingEnemyCastleHealthLabel.fontSize = 50.0
         enemyCastle.addChild(remainingEnemyCastleHealthLabel)
         
@@ -95,12 +95,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setPhysicsCategory(attacker: SKSpriteNode) {
         if attacker.name == "yourAttacker" {
-            attacker.physicsBody.categoryBitMask = yourAttackerCategory
-            attacker.physicsBody.collisionBitMask = enemyCastleCategory | enemyAttackerCategory
-            attacker.physicsBody.contactTestBitMask = enemyAttackerCategory
+            attacker.physicsBody!.categoryBitMask = yourAttackerCategory
+            attacker.physicsBody!.collisionBitMask = enemyCastleCategory | enemyAttackerCategory
+            attacker.physicsBody!.contactTestBitMask = enemyAttackerCategory
         } else if attacker.name == "enemyAttacker" {
-            attacker.physicsBody.categoryBitMask = enemyAttackerCategory
-            attacker.physicsBody.collisionBitMask = yourCastleCategory | yourAttackerCategory
+            attacker.physicsBody!.categoryBitMask = enemyAttackerCategory
+            attacker.physicsBody!.collisionBitMask = yourCastleCategory | yourAttackerCategory
         }
     }
    
@@ -140,7 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if moneyUpTimeCounter > 0.5 {
             moneyUpTimeCounter = 0
             remainingMoney += moneyUpRate
-            remainingMoneyLabel.text = String(remainingMoney)
+            remainingMoneyLabel.text = String(stringInterpolationSegment: remainingMoney)
         }
         enemyCreateTimeCounter += currentTime - prevTime
         if enemyCreateTimeCounter > 4 {
@@ -179,14 +179,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var bodyB_Mask = contact.bodyB.categoryBitMask
         if ( bodyA_Mask == yourAttackerCategory && bodyB_Mask == enemyCastleCategory ) || ( bodyB_Mask == yourAttackerCategory && bodyA_Mask == enemyCastleCategory ) {
             enemyCastleHealth -= 10.0
-            remainingEnemyCastleHealthLabel.text = String(enemyCastleHealth)
+            remainingEnemyCastleHealthLabel.text = String(stringInterpolationSegment: enemyCastleHealth)
             var enemyCastleNode:SKSpriteNode!
             if bodyA_Mask == enemyCastleCategory {
-                enemyCastleNode = contact.bodyA.node as SKSpriteNode
+                enemyCastleNode = contact.bodyA.node as! SKSpriteNode
             } else {
-                enemyCastleNode = contact.bodyB.node as SKSpriteNode
+                enemyCastleNode = contact.bodyB.node as! SKSpriteNode
             }
-            enemyCastleNode.physicsBody.velocity = CGVectorMake(0, 0)
+            enemyCastleNode.physicsBody!.velocity = CGVectorMake(0, 0)
             enemyCastleNode.runAction(SKAction.sequence([
                 SKAction.moveByX(2.0, y:2.0, duration: NSTimeInterval(0.05)),
                 SKAction.moveByX(-2.0, y:-2.0, duration: NSTimeInterval(0.05)),
@@ -194,26 +194,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if ( bodyA_Mask == enemyAttackerCategory && bodyB_Mask == yourCastleCategory ) || ( bodyB_Mask == enemyAttackerCategory && bodyA_Mask == yourCastleCategory) {
             yourCastleHealth -= 10.0
-            remainingYourCastleHealthLabel.text = String(yourCastleHealth)
+            remainingYourCastleHealthLabel.text = String(stringInterpolationSegment: yourCastleHealth)
             var yourCastleNode:SKSpriteNode!
             if bodyA_Mask == yourCastleCategory {
-                yourCastleNode = contact.bodyA.node as SKSpriteNode
+                yourCastleNode = contact.bodyA.node as! SKSpriteNode
             } else {
-                yourCastleNode = contact.bodyB.node as SKSpriteNode
+                yourCastleNode = contact.bodyB.node as! SKSpriteNode
             }
-            yourCastleNode.physicsBody.velocity = CGVectorMake(0, 0)
+            yourCastleNode.physicsBody!.velocity = CGVectorMake(0, 0)
             yourCastleNode.runAction(SKAction.sequence([
                 SKAction.moveByX(-2.0, y:2.0, duration: NSTimeInterval(0.05)),
                 SKAction.moveByX(2.0, y:-2.0, duration: NSTimeInterval(0.05)),
             ]))
         }
         if ( bodyA_Mask == yourAttackerCategory && bodyB_Mask == enemyAttackerCategory) {
-            applyDamageTo(contact.bodyB.node)
-            applyDamageTo(contact.bodyA.node)
+            applyDamageTo(contact.bodyB.node!)
+            applyDamageTo(contact.bodyA.node!)
             contact.bodyA.applyImpulse(CGVectorMake(-12, 8))
             let sparkPath = NSBundle.mainBundle().pathForResource("spark", ofType:"sks")
-            let spark = NSKeyedUnarchiver.unarchiveObjectWithFile(sparkPath) as SKEmitterNode
-            spark.position = contact.bodyB.node.position
+            let spark = NSKeyedUnarchiver.unarchiveObjectWithFile(sparkPath!) as! SKEmitterNode
+            spark.position = contact.bodyB.node!.position
             self.runAction(SKAction.sequence([
                 SKAction.runBlock({self.addChild(spark)}),
                 SKAction.waitForDuration(NSTimeInterval(0.1)),
@@ -221,12 +221,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ]))
         }
         if ( bodyB_Mask == yourAttackerCategory && bodyA_Mask == enemyAttackerCategory) {
-            applyDamageTo(contact.bodyA.node)
-            applyDamageTo(contact.bodyB.node)
+            applyDamageTo(contact.bodyA.node!)
+            applyDamageTo(contact.bodyB.node!)
             contact.bodyA.applyImpulse(CGVectorMake(12, 8))
             let sparkPath = NSBundle.mainBundle().pathForResource("spark", ofType:"sks")
-            let spark = NSKeyedUnarchiver.unarchiveObjectWithFile(sparkPath) as SKEmitterNode
-            spark.position = contact.bodyB.node.position
+            let spark = NSKeyedUnarchiver.unarchiveObjectWithFile(sparkPath!) as! SKEmitterNode
+            spark.position = contact.bodyB.node!.position
             self.runAction(SKAction.sequence([
                 SKAction.runBlock({self.addChild(spark)}),
                 SKAction.waitForDuration(NSTimeInterval(0.1)),
